@@ -8,3 +8,8 @@ class CarbonData(SQLModel, table=True):
         sa_column=Column(DateTime(timezone=True), primary_key=True)
     )
     value: float
+
+
+class OnboardingModel(SQLModel, table=False):
+    utility: str
+    email: str

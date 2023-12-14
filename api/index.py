@@ -1,6 +1,12 @@
 from fastapi import FastAPI
+from json import dumps
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
-from .models import CarbonData
+from .models import CarbonData, OnboardingModel
+
+import requests
+
+bayou_domain = "staging.bayou.energy"
+bayou_api_key = "test_197_xxxxxxf" # DO NOT COMMIT THISSSS!
 
 app = FastAPI()
 
@@ -29,3 +35,17 @@ def hello_world():
 def get_carbon_data():
     with Session(engine) as session:
         return session.exec(select(CarbonData)).all()
+
+
+@app.post("/onboarding")
+def onboarding(onboarding: OnboardingModel):
+    customer = requests.post(f"https://{bayou_domain}/api/v2/customers", json={
+        "utility": OnboardingModel.utility,
+        "email" : OnboardingModel.email,
+    }, auth=(bayou_api_key, '')).json()
+
+    response = {
+        'link': customer['onboarding_link'],
+    }
+
+    return dumps(response)
