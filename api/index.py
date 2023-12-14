@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from json import dumps
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
-from .models import CarbonData, OnboardingModel
+from .models import CarbonData, OnboardingModel, OnboardingOut
+import os
 
 import requests
 
 bayou_domain = "staging.bayou.energy"
-bayou_api_key = "test_197_xxxxxxf" # DO NOT COMMIT THISSSS!
+bayou_api_key = "test_194_xxx"  # DO NOT COMMIT THISSSS!
 
 app = FastAPI()
 
@@ -37,15 +38,19 @@ def get_carbon_data():
         return session.exec(select(CarbonData)).all()
 
 
-@app.post("/onboarding")
+@app.post("/api/onboarding")
 def onboarding(onboarding: OnboardingModel):
-    customer = requests.post(f"https://{bayou_domain}/api/v2/customers", json={
-        "utility": OnboardingModel.utility,
-        "email" : OnboardingModel.email,
-    }, auth=(bayou_api_key, '')).json()
-
-    response = {
-        'link': customer['onboarding_link'],
-    }
-
-    return dumps(response)
+    customer = requests.post(
+        f"https://{bayou_domain}/api/v2/customers",
+        json={
+            "utility": onboarding.utility,
+            "email": onboarding.email,
+        },
+        auth=(bayou_api_key, ""),
+    )
+    if customer.status_code == 400:
+        return customer.json()
+    else:
+        return OnboardingOut(
+            link=customer["onboarding_link"],
+        )

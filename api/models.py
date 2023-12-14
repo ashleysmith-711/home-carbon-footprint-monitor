@@ -13,3 +13,7 @@ class CarbonData(SQLModel, table=True):
 class OnboardingModel(SQLModel, table=False):
     utility: str
     email: str
+
+
+class OnboardingOut(SQLModel, table=False):
+    link: str
