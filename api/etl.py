@@ -3,29 +3,46 @@ from sqlmodel import Session, delete
 from sqlalchemy import text
 
 from db import engine
-from models import CarbonData
+from models import CarbonData, EnergyData
 import typer
 
 cli = typer.Typer()
 
 
 @cli.command()
-def load_sample_energy_data(customer_id: str = "123"):
+def load_sample_energy_data(customer_id: str = "123", utility: str = "PGE"):
     with Session(engine) as session:
         session.execute(
             text(
-                "DELETE FROM energydata where customer_id=:customer_id",
+                "DELETE FROM energydata where customer_id=:customer_id and utility=:utility",
             ),
-            {"customer_id": customer_id},
+            {"customer_id": customer_id, "utility": utility},
         )
+        """
+        building_url = "https://oedi-data-lake.s3.amazonaws.com/nrel-pds-building-stock/end-use-load-profiles-for-us-building-stock/2022/resstock_amy2018_release_1.1/timeseries_aggregates/by_state/upgrade=0/state=CA/up00-ca-single-family_detached.csv"
+        df_loadshape[['timestamp','out.electricity.total.energy_consumption.kwh']].to_csv('sample_energy.csv',index=False)
+        """
+        df_loadshape = pd.read_csv("sample_energy.csv")
+        df_loadshape["utc_time"] = (
+            pd.to_datetime(df_loadshape["timestamp"])
+            .dt.tz_localize("Etc/GMT+5")
+            .dt.tz_convert("UTC")
+        )
+        for row in (
+            df_loadshape[["utc_time", "out.electricity.total.energy_consumption.kwh"]]
+            .dropna()
+            .to_dict("records")
+        ):
+            new_record = EnergyData(
+                customer_id=customer_id,
+                utility=utility,
+                timestamp=row["utc_time"],
+                energy_kwh=row["out.electricity.total.energy_consumption.kwh"],
+            )
+            session.add(new_record)
+
+        # Commit the transaction
         session.commit()
-        upgrade = "1"
-        state = "CA"
-        building_id = 281
-        base_url_1_1 = "https://oedi-data-lake.s3.amazonaws.com/nrel-pds-building-stock/end-use-load-profiles-for-us-building-stock/2022/resstock_amy2018_release_1.1/"
-        building_url = f"{base_url_1_1}timeseries_individual_buildings/by_state/upgrade={upgrade}/state={state}/{building_id}-{upgrade}.parquet"
-        df_loadshape = pd.read_parquet(building_url)
-        breakpoint()
 
 
 @cli.command()
@@ -39,7 +56,6 @@ def load_carbon_data(balancing_authority: str = "CISO"):
             ),
             {"balancing_authority": balancing_authority},
         )
-        session.commit()
         """
         df_ba = pd.read_excel(
             f"https://www.eia.gov/electricity/gridmonitor/knownissues/xls/{balancing_authority}.xlsx"

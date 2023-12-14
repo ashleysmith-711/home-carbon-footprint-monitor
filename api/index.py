@@ -20,3 +20,9 @@ def hello_world():
 def get_carbon_data():
     with Session(engine) as session:
         return session.exec(select(CarbonData)).all()
+
+
+@app.get("/api/energy-data")
+def get_carbon_data():
+    with Session(engine) as session:
+        return session.exec(select(EnergyData)).all()
