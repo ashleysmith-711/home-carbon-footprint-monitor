@@ -22,7 +22,7 @@ from .models import (
     OnboardingModel,
     OnboardingOut,
     CarbonEnergyData,
-    NoteData
+    NoteData,
 )
 
 from .seed import load_sample_energy_data
@@ -81,7 +81,6 @@ def get_carbon_data(
             .filter(EnergyData.customer_id == customer_id)
             .all()
         )
-        breakpoint()
         return [
             CarbonEnergyData(
                 timestamp=row.timestamp,
