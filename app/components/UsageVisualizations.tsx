@@ -105,7 +105,7 @@ const UsageVisualizations = ({ customerId }: UsageGraphProps) => {
                             <li>Steve Jackson (10.5 lbs CO2)</li>
                             <li>Ashley Smith (11.11 lbs CO2)</li>
                         </ol>
-                        <p className="mt-2 text-grey-100">You didn't made the leaderboard with CO2 emissions of {emissionsPastWeek?.toFixed(3)}. <a href="#" target='_blank' className='text-yellow-300'>Click here</a> to read tips on how to lower your emissions without sacrificing quality of life</p>
+                        <p className="mt-2 text-grey-100">You did not made the leaderboard with CO2 emissions of {emissionsPastWeek?.toFixed(3)}. <a href="#" target='_blank' className='text-yellow-300'>Click here</a> to read tips on how to lower your emissions without sacrificing quality of life</p>
                     </div>
 
                 </div>
