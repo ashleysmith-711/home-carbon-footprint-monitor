@@ -1,4 +1,14 @@
-from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
+from sqlmodel import (
+    Field,
+    Session,
+    SQLModel,
+    create_engine,
+    select,
+    DateTime,
+    Column,
+    Date,
+)
+from datetime import date
 from datetime import datetime
 from enum import Enum, auto
 
@@ -44,3 +54,8 @@ class OnboardingModel(SQLModel, table=False):
 class OnboardingOut(SQLModel, table=False):
     link: str
     id: int
+
+class NoteData(SQLModel, table=True):
+    customer_id: str = Field(primary_key=True)
+    note_date: date = Field(sa_column=Column(Date, primary_key=True))
+    note: str

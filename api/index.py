@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+import pandas as pd
+from sqlalchemy import text
+from datetime import date
 from datetime import datetime, timedelta
 from json import dumps
 from sqlmodel import (
@@ -19,7 +22,9 @@ from .models import (
     OnboardingModel,
     OnboardingOut,
     CarbonEnergyData,
+    NoteData
 )
+
 from .seed import load_sample_energy_data
 from .seed import load_carbon_data
 
@@ -34,7 +39,6 @@ app = FastAPI()
 
 @app.on_event("startup")
 def on_startup():
-    SQLModel.metadata.create_all(engine)
     SQLModel.metadata.create_all(engine)
     load_sample_energy_data(customer_id="123", utility="PGE")
     load_carbon_data(balancing_authority="CISO")
@@ -107,3 +111,28 @@ def onboarding(onboarding: OnboardingModel):
             link=json_response["onboarding_link"],
             id=json_response["id"],
         )
+
+
+@app.get("/api/notes")
+def get_note(customer_id: str, note_date: date) -> NoteData:
+    with Session(engine) as session:
+        result = session.exec(select(NoteData)).one_or_none()
+        if result:
+            return result
+        else:
+            return {"customer_id": customer_id, "note_date": note_date, "note": ""}
+
+
+@app.post("/api/notes")
+def post_note(new_note: NoteData) -> NoteData:
+    with Session(engine) as session:
+        new_note.note_date = pd.to_datetime(new_note.note_date).date()
+        session.execute(
+            text(
+                "DELETE FROM notedata where customer_id=:customer_id and note_date=:note_date",
+            ),
+            {"customer_id": new_note.customer_id, "note_date": new_note.note_date},
+        )
+        session.add(new_note)
+        session.commit()
+    return new_note
