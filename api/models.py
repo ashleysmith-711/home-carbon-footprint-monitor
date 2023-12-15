@@ -21,9 +21,19 @@ class EnergyData(SQLModel, table=True):
     timestamp: datetime = Field(
         sa_column=Column(DateTime(timezone=True), primary_key=True)
     )
-    utility: str
+    utility: str = Field(primary_key=True)
     fuel_source: FuelSource = FuelSource.electricity
     energy_kwh: float
+
+
+class CarbonEnergyData(SQLModel, table=False):
+    customer_id: str = Field(primary_key=True)
+    timestamp: datetime = Field(
+        sa_column=Column(DateTime(timezone=True), primary_key=True)
+    )
+    fuel_source: FuelSource = FuelSource.electricity
+    energy_kwh: float
+    carbon_co2_lbs: float
 
 
 class OnboardingModel(SQLModel, table=False):
