@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from json import dumps
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
-from .bayou import bayou_domain, bayou_api_key
+from .bayou import bayou_domain, bayou_api_key, get_intervals_for_customer
 
 from sqlmodel import (
     Field,
@@ -28,6 +28,8 @@ from .models import (
     OnboardingOut,
     CarbonEnergyData,
     NoteData,
+    WebhookEventType,
+    Webhook,
 )
 
 from .seed import load_sample_energy_data
@@ -115,6 +117,37 @@ def onboarding(onboarding: OnboardingModel):
             link=json_response["onboarding_link"],
             id=json_response["id"],
         )
+
+
+@app.post("/api/webhooks")
+def webhooks(webhook: Webhook):
+    result = {}
+    if webhook.event == WebhookEventType.intervals_ready:
+        intervals = get_intervals_for_customer(
+            customer_id=webhook.object_alias['customer_id'],
+            start_date=datetime.fromisoformat(webhook.object_alias['first_interval_discovered']),
+            end_date=datetime.fromisoformat(webhook.object_alias['last_interval_discovered']),
+        )
+        utility = "BAYOU"
+        with Session(engine) as session:
+            for interval in intervals:
+                session.add(
+                    EnergyData(
+                        utility=utility,
+                        timestamp=interval.start,
+                        customer_id=interval.customer,
+                        energy_kwh=interval.electricity_consumption,
+                    )
+                )
+
+            session.commit()
+
+        result = {
+            "intervals_count": len(intervals)
+        }
+
+    return result
+
 
 @app.get("/api/notes")
 def get_note(customer_id: str, note_date: date) -> NoteData:

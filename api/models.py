@@ -1,4 +1,5 @@
-
+# Required because webhook events use a field called 'object', so it needs to be overriden
+from pydantic import BaseModel, Field as PydanticField
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
 from typing import Optional
 
@@ -91,6 +92,18 @@ class IntervalsResponse(SQLModel, table=False):
     last_interval_discovered: datetime
     granularities: list[int]
     meters: list[Meter]
+
+
+# Webhook related types
+class WebhookEventType(str, Enum):
+    filled_credentials = 'customer_has_filled_credentials'
+    intervals_ready = 'intervals_ready'
+
+
+class Webhook(BaseModel):
+    event: WebhookEventType
+    object_alias: dict = PydanticField(serialization_alias="object", validation_alias="object")
+
 
 class NoteData(SQLModel, table=True):
     customer_id: str = Field(primary_key=True)

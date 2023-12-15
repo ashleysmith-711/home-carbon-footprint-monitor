@@ -13,14 +13,25 @@ bayou_domain = "staging.bayou.energy"
 bayou_api_key = "test_197_b527b88d4f61e86eb22dc97fe8ff94997cb8028f39e90106b85e011640b30e1f"
 
 
-def get_intervals_for_customer(customer_id: int):
+def get_intervals_for_customer(
+	customer_id: int,
+	start_date: datetime=None,
+	end_date: datetime=None
+):
     datetime_fmt = '%Y-%m-%dT%H:%M:%SZ'
     intervals = []
+
+    query_params = {}
+    if start_date:
+        query_params['start'] = start_date.strftime(datetime_fmt)
+    if end_date:
+        query_params['end'] = end_date.strftime(datetime_fmt)
+
     response = requests.get(
-        f"https://staging.bayou.energy/api/v2/customers/{customer_id}/intervals",
+        f"https://{bayou_domain}/api/v2/customers/{customer_id}/intervals",
+        params=query_params,
         auth=(bayou_api_key, '')
     ).json()
-    print( response.keys())
 
     for meter in response['meters']:
         for interval in meter['intervals']:
