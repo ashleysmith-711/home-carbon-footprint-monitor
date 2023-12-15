@@ -33,3 +33,4 @@ class OnboardingModel(SQLModel, table=False):
 
 class OnboardingOut(SQLModel, table=False):
     link: str
+    id: int
