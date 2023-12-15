@@ -10,7 +10,7 @@ export const sumByDay = (data: EnergyData[]): Record<string, DailySum> => {
 
         // Initialize the object for this date if it doesn't exist
         if (!sumByDate[date]) {
-            sumByDate[date] = { date, name: date, energy_kwh: 0, carbon_co2_lbs: 0 };
+            sumByDate[date] = { date, energy_kwh: 0, carbon_co2_lbs: 0 };
         }
 
         // Add the current item's values to the sum

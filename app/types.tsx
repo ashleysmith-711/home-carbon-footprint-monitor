@@ -13,7 +13,6 @@ export interface EnergyData {
 }
 
 export interface DailySum {
-    name: string;
     date: string;
     energy_kwh: number;
     carbon_co2_lbs: number;
