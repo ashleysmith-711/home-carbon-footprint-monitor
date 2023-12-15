@@ -35,7 +35,9 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 bayou_domain = "staging.bayou.energy"
-bayou_api_key = "test_194_5d6127446862110acaaf13d8779a594bb2f49012b34d59a46d00214c956bf1c4"
+bayou_api_key = (
+    "test_194_5d6127446862110acaaf13d8779a594bb2f49012b34d59a46d00214c956bf1c4"
+)
 
 app = FastAPI()
 
@@ -43,8 +45,8 @@ app = FastAPI()
 @app.on_event("startup")
 def on_startup():
     SQLModel.metadata.create_all(engine)
-    load_sample_energy_data(customer_id="123", utility="PGE")
-    load_carbon_data(balancing_authority="CISO")
+    # load_sample_energy_data(customer_id="123", utility="PGE")
+    # load_carbon_data(balancing_authority="CISO")
 
 
 @app.get("/api/python")
@@ -114,13 +116,13 @@ def onboarding(onboarding: OnboardingModel):
             id=json_response["id"],
         )
 
+
 @app.get("/api/notes")
 def get_note(customer_id: str, note_date: date) -> NoteData:
     with Session(engine) as session:
         # Create the select statement
         stmt = select(NoteData).where(
-            NoteData.customer_id == customer_id,
-            NoteData.note_date == note_date
+            NoteData.customer_id == customer_id, NoteData.note_date == note_date
         )
 
         # Execute the statement and fetch one or none
