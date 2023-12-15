@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from json import dumps
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
+from .bayou import bayou_domain, bayou_api_key
 from .db import engine
 from .models import CarbonData, EnergyData, OnboardingModel, OnboardingOut
 from .seed import load_sample_energy_data
@@ -8,9 +9,6 @@ from .seed import load_carbon_data
 
 import os
 import requests
-
-bayou_domain = "staging.bayou.energy"
-bayou_api_key = "test_194_xxx"  # DO NOT COMMIT THISSSS!
 
 app = FastAPI()
 
