@@ -39,12 +39,8 @@ export default function NotesModal({ isOpen, setOpen, date, customerId }: Props)
 
     const handleSaveNotes = async () => {
         // make api call
-        console.log('___In handleSaveNotes___')
         const str = energyActions.filter(action => action.selected).map(action => action.name).join(', ');
-        // console.log('created string', str);
-        // const url = `/api/notes?note='${encodeURIComponent(str)}'&customer_id=${customerId}&date=${date}`;
-        // const body = JSON.stringify({new_note: { note: str, customer_id: (customerId || 123).toString(), note_date: date }});
-        // console.log('body', body);
+
         try {
             const response = await fetch('/api/notes', {
                 method: 'POST',
