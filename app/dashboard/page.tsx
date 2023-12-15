@@ -4,8 +4,6 @@ import { useEffect } from "react";
 import CarbonFootprintSummary from "../components/CarbonFootprintSummary";
 import Leaderboard from "../components/Leaderboard";
 import UsageGraph from "../components/UsageGraph";
-import UserInfo from "../components/UserInfo"
-import { useRouter } from "next/router";
 
 const Dashboard = () => {
     useEffect(() => {
@@ -15,9 +13,8 @@ const Dashboard = () => {
     }, [])
     return (
         <main className="flex min-h-screen flex-col p-24">
-            <h1 className="text-3xl text-green-700 mb-6">Energy Journal Dashboard</h1>
-            <div className="grid-cols-3 flex gap-3">
-                <UserInfo />
+            <h1 className="text-3xl text-green-700 mb-6">Energy Journal Dashboard?</h1>
+            <div className="grid-cols-2 flex gap-3">
                 <CarbonFootprintSummary />
                 <Leaderboard />
             </div>

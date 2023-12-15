@@ -59,7 +59,7 @@ def get_carbon_data():
 def get_carbon_data(
     customer_id: str = "123", balancing_authority: str = "CISO"
 ) -> list[CarbonEnergyData]:
-    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    seven_days_ago = datetime.utcnow() - timedelta(days=7)
     with Session(engine) as session:
         result = (
             session.query(
@@ -73,7 +73,7 @@ def get_carbon_data(
             .join(
                 CarbonData,
                 and_(
-                    EnergyData.timestamp >= thirty_days_ago,
+                    EnergyData.timestamp >= seven_days_ago,
                     EnergyData.timestamp == CarbonData.timestamp,
                 ),
             )
