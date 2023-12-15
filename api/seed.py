@@ -23,7 +23,7 @@ def load_sample_energy_data(customer_id: str = "123", utility: str = "PGE"):
             pd.to_datetime(df_loadshape["timestamp"])
             .dt.tz_localize("Etc/GMT+5")
             .dt.tz_convert("UTC")
-        )
+        ).apply(lambda x: x.replace(year=2023))
         for row in (
             df_loadshape[["utc_time", "out.electricity.total.energy_consumption.kwh"]]
             .dropna()
@@ -33,7 +33,8 @@ def load_sample_energy_data(customer_id: str = "123", utility: str = "PGE"):
                 customer_id=customer_id,
                 utility=utility,
                 timestamp=row["utc_time"],
-                energy_kwh=row["out.electricity.total.energy_consumption.kwh"],
+                energy_kwh=row["out.electricity.total.energy_consumption.kwh"]
+                / 10000000,
             )
             session.add(new_record)
 
