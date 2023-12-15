@@ -24,3 +24,12 @@ class EnergyData(SQLModel, table=True):
     utility: str
     fuel_source: FuelSource = FuelSource.electricity
     energy_kwh: float
+
+
+class OnboardingModel(SQLModel, table=False):
+    utility: str
+    email: str
+
+
+class OnboardingOut(SQLModel, table=False):
+    link: str
