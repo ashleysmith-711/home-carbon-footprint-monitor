@@ -111,29 +111,31 @@ const UsageVisualizations = ({ customerId }: UsageGraphProps) => {
             </div>
             <div>
                 <h3 className='text-lg text-green-700 mb-3 mt-3'>Chart showing CO2 lbs and kwh consumed per day:</h3>
-                <BarChart
-                    width={800}
-                    height={400}
-                    data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" onClick={handleShowNotes} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="energy_kwh" fill="#fb923c" activeBar={<Rectangle fill="#ffa042" stroke="#e18336" />} onClick={handleBarClick} />
-                    <Bar dataKey="carbon_co2_lbs" fill="#0369a1" activeBar={<Rectangle fill="#0373b1" stroke="#025e90" />} onClick={handleBarClick} />
-                </BarChart>
-                {notesDate && (<div className="bg-gray-200 p-8 rounded-lg">
-                    <p><b>Notes for {reformatDate(notesDate)}</b></p>
-                    <p>{notes ? notes : 'No notes saved for this date'}</p>
-                </div>)}
+                <div className="flex">
+                    <BarChart
+                        width={800}
+                        height={400}
+                        data={data}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" onClick={handleShowNotes} />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="energy_kwh" fill="#fb923c" activeBar={<Rectangle fill="#ffa042" stroke="#e18336" />} onClick={handleBarClick} />
+                        <Bar dataKey="carbon_co2_lbs" fill="#0369a1" activeBar={<Rectangle fill="#0373b1" stroke="#025e90" />} onClick={handleBarClick} />
+                    </BarChart>
+                    {notesDate && (<div className="bg-gray-200 p-8 rounded-lg w-1/3">
+                        <p><b>Notes for {reformatDate(notesDate)}</b></p>
+                        <p>{notes ? notes : 'No notes saved for this date'}</p>
+                    </div>)}
+                </div>
             </div>
         </div>
     );
