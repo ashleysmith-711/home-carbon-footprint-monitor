@@ -52,5 +52,5 @@ def onboarding(onboarding: OnboardingModel):
         return customer.json()
     else:
         return OnboardingOut(
-            link=customer["onboarding_link"],
+            link=customer.json()["onboarding_link"],
         )
