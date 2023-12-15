@@ -8,7 +8,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       {!isLoggedIn && <GettingStarted />}
       {isLoggedIn && <Dashboard />}
     </main>

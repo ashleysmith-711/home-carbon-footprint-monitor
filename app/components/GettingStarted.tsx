@@ -29,16 +29,17 @@ const GettingStarted = (): JSX.Element => {
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
+          className="mx-auto h-30 w-auto"
+          src="/GreenPulse.png"
+          alt="Green Pulse logo"
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Get Started by providing your Email and Utility Company name (i.e. PG&E)
-        </h2>
+        
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 className="mt-10  text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Get Started by providing your Email and Utility Company name:
+        </h2>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div className="flex items-center justify-between">

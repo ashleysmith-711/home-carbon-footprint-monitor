@@ -1,6 +1,6 @@
 import CarbonFootprintSummary from "./CarbonFootprintSummary";
 import Leaderboard from "./Leaderboard";
-import UsageGraph from "./UsageGraph";
+import UsageChart from "./UsageChart";
 import UserInfo from "./UserInfo"
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
                 <CarbonFootprintSummary />
                 <Leaderboard />
             </div>
-            <UsageGraph />
+            <UsageChart />
         </div>
         
     )
