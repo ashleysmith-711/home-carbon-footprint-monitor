@@ -50,9 +50,11 @@ def onboarding(onboarding: OnboardingModel):
         },
         auth=(bayou_api_key, ""),
     )
+    json_response = customer.json()
     if customer.status_code == 400:
-        return customer.json()
+        return json_response
     else:
         return OnboardingOut(
-            link=customer.json()["onboarding_link"],
+            link=json_response["onboarding_link"],
+            id=json_response["id"],
         )
