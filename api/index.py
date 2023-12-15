@@ -32,7 +32,7 @@ import os
 import requests
 
 bayou_domain = "staging.bayou.energy"
-bayou_api_key = "test_194_xxx"  # DO NOT COMMIT THISSSS!
+bayou_api_key = "test_194_5d6127446862110acaaf13d8779a594bb2f49012b34d59a46d00214c956bf1c4"
 
 app = FastAPI()
 
