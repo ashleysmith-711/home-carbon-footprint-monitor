@@ -80,6 +80,7 @@ const UsageVisualizations = ({ customerId }: UsageGraphProps) => {
 
     const handleShowNotes = (...props: any[]) => {
         const date = props[0].value as string; // i.e. "2023-12-11"
+        console.log('__notes date pre formatting', date);
         setNotesDate(date);
     }
 
@@ -92,7 +93,7 @@ const UsageVisualizations = ({ customerId }: UsageGraphProps) => {
 
                 <div className="flex">
                     <div className="flex-1 text-gray-100 text-center bg-pink-800 px-4 py-2 m-2 rounded-lg">
-                        <p><b>My total Emissions (last 7 days):</b></p>
+                        <p className="mt-8"><b>My total Emissions (last 7 days):</b></p>
                         <p className='text-6xl mt-10'>{emissionsPastWeek ? emissionsPastWeek.toFixed(3) : 'Loading...'} lbs CO2</p>
                     </div>
                     <div className="flex-1 text-gray-100 bg-green-700 px-4 py-2 m-2 ml-8 rounded-lg">
@@ -133,7 +134,7 @@ const UsageVisualizations = ({ customerId }: UsageGraphProps) => {
                     </BarChart>
                     {notesDate && (<div className="bg-gray-200 p-8 rounded-lg w-1/3">
                         <p><b>Notes for {reformatDate(notesDate)}</b></p>
-                        <p>{notes ? notes : 'No notes saved for this date'}</p>
+                        <p className="mt-2">{notes ? notes : <i>No notes saved for this date</i>}</p>
                     </div>)}
                 </div>
             </div>

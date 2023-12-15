@@ -22,7 +22,14 @@ export const sumByDay = (data: EnergyData[]): Record<string, DailySum> => {
 }
 
 export const reformatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-US', {
+    // Split the date string into parts
+    const [year, month, day] = dateStr.split('-').map(part => parseInt(part, 10));
+
+    // Create a new Date object with local time zone
+    const date = new Date(year, month - 1, day);
+
+    // Format the date
+    return date.toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
         day: 'numeric'
