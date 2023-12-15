@@ -1,23 +1,19 @@
 from fastapi import FastAPI
 from sqlmodel import Field, Session, SQLModel, create_engine, select, DateTime, Column
-from .models import CarbonData
+from .models import CarbonData, EnergyData
+from .db import engine
+from .seed import load_sample_energy_data
+from .seed import load_carbon_data
 
 app = FastAPI()
-
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
-
-
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
 
 
 @app.on_event("startup")
 def on_startup():
-    create_db_and_tables()
+    SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(engine)
+    load_sample_energy_data(customer_id="123", utility="PGE")
+    load_carbon_data(balancing_authority="CISO")
 
 
 @app.get("/api/python")
@@ -29,3 +25,9 @@ def hello_world():
 def get_carbon_data():
     with Session(engine) as session:
         return session.exec(select(CarbonData)).all()
+
+
+@app.get("/api/energy-data")
+def get_carbon_data():
+    with Session(engine) as session:
+        return session.exec(select(EnergyData)).all()
