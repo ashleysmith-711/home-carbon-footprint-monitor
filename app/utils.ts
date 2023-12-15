@@ -21,3 +21,10 @@ export const sumByDay = (data: EnergyData[]): Record<string, DailySum> => {
     return sumByDate;
 }
 
+export const reformatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+    });
+}

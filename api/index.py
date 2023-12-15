@@ -114,11 +114,27 @@ def onboarding(onboarding: OnboardingModel):
             id=json_response["id"],
         )
 
-
+# result = session.exec(
+        #     select(NoteData).where(
+        #         NoteData.customer_id == customer_id,
+        #         NoteData.note_date == note_date
+        #     )
+        # ).one_or_none()
+        # if result:
+        #     return result
+        # else:
+        #     return {"customer_id": customer_id, "note_date": note_date, "note": ""}
 @app.get("/api/notes")
 def get_note(customer_id: str, note_date: date) -> NoteData:
     with Session(engine) as session:
-        result = session.exec(select(NoteData)).one_or_none()
+        # Create the select statement
+        stmt = select(NoteData).where(
+            NoteData.customer_id == customer_id,
+            NoteData.note_date == note_date
+        )
+
+        # Execute the statement and fetch one or none
+        result = session.execute(stmt).scalar_one_or_none()
         if result:
             return result
         else:

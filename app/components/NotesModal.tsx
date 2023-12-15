@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import toast from 'react-hot-toast';
+import { reformatDate } from '../utils';
 
 
 interface Props {
@@ -28,13 +29,6 @@ export default function NotesModal({ isOpen, setOpen, date, customerId }: Props)
     ])
     console.log('date in modal', date)
     const cancelButtonRef = useRef(null)
-    const reformatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric'
-        });
-    }
 
     const resetSelected = () => {
         setEnergyActions(energyActions.map(action => {
