@@ -14,15 +14,6 @@ interface Props {
   setId: (id: number) => void;
 }
 const GettingStarted = ({ setId }: Props): JSX.Element => {
-  
-  // useEffect(() => {
-  //   // Save a value to localStorage
-  //   console.log(`saving id ${id} to localStorage`);
-  //   // Also saving to state for ease of use on Dashboard
-  //   // id && setCustomerId(id);
-  //   id && localStorage.setItem('customerId', id.toString());
-  // }, [id]);
-
   const {
     register,
     handleSubmit,

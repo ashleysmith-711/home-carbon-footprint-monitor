@@ -30,6 +30,9 @@ from .seed import load_carbon_data
 
 import os
 import requests
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 bayou_domain = "staging.bayou.energy"
 bayou_api_key = "test_194_5d6127446862110acaaf13d8779a594bb2f49012b34d59a46d00214c956bf1c4"
@@ -124,6 +127,7 @@ def get_note(customer_id: str, note_date: date) -> NoteData:
 
 @app.post("/api/notes")
 def post_note(new_note: NoteData) -> NoteData:
+    logging.info(f"_____Received note data_____: {new_note}")
     with Session(engine) as session:
         new_note.note_date = pd.to_datetime(new_note.note_date).date()
         session.execute(

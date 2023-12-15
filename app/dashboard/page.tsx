@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import CarbonFootprintSummary from "../components/CarbonFootprintSummary";
 import Leaderboard from "../components/Leaderboard";
 import UsageGraph from "../components/UsageGraph";
+import { Toaster } from 'react-hot-toast';
+
 
 const Dashboard = () => {
     const [customerId, setCustomerId] = useState<number | null>(null);
@@ -21,6 +23,7 @@ const Dashboard = () => {
                 <Leaderboard />
             </div>
             {customerId && <UsageGraph customerId={customerId}/>}
+            <Toaster />
         </main>
     )
 }
