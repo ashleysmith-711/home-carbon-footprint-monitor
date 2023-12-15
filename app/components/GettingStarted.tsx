@@ -1,4 +1,8 @@
-import { FormEvent } from "react";
+'use client'
+
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 
 type Inputs = {
@@ -6,23 +10,42 @@ type Inputs = {
   utility: string
 }
 
-const GettingStarted = (): JSX.Element => {
+interface Props {
+  setId: (id: number) => void;
+}
+const GettingStarted = ({ setId }: Props): JSX.Element => {
+  
+  // useEffect(() => {
+  //   // Save a value to localStorage
+  //   console.log(`saving id ${id} to localStorage`);
+  //   // Also saving to state for ease of use on Dashboard
+  //   // id && setCustomerId(id);
+  //   id && localStorage.setItem('customerId', id.toString());
+  // }, [id]);
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, utility } = data;
-    fetch('/api/onboarding', {
+    const response = await fetch('/api/onboarding', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, utility }),
-    })
+    });
+
+    const resData = await response.json();
+
+    const { link, id } = resData;
+    setId(id)
+    window.open(link, '_blank')
+    console.log({link, id});
+    localStorage.setItem('customerId', id.toString())
   }
 
   return (

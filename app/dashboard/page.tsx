@@ -1,13 +1,13 @@
-import CarbonFootprintSummary from "./CarbonFootprintSummary";
-import Leaderboard from "./Leaderboard";
-import UsageChart from "./UsageChart";
-import UserInfo from "./UserInfo"
+import CarbonFootprintSummary from "../components/CarbonFootprintSummary";
+import Leaderboard from "../components/Leaderboard";
+import UsageGraph from "../components/UsageGraph";
+import UserInfo from "../components/UserInfo"
 
 interface DashboardProps {
     customerId: number;
 }
 const Dashboard = ({customerId}: DashboardProps) => {
-    console.log('customerId', customerId);
+    console.log('customerId', customerId); // potentially query param
     return (
         <div>
             <h1 className="text-3xl text-green-700 mb-6">Energy Journal Dashboard</h1>
@@ -16,7 +16,7 @@ const Dashboard = ({customerId}: DashboardProps) => {
                 <CarbonFootprintSummary />
                 <Leaderboard />
             </div>
-            <UsageChart />
+            <UsageGraph />
         </div>
         
     )
