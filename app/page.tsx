@@ -1,20 +1,17 @@
 'use client'
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import GettingStarted from "./components/GettingStarted";
-import Dashboard from "./components/Dashboard";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [customerId, setCustomerId] = useState<number | null>(null);
-  // console.log({isLoggedIn})
+
   useEffect(() => {
     if (customerId) {
-      // setIsLoggedIn(true);
       console.log('customerId', customerId);
-      router.push(`/dashboard?id=${customerId}`);
+      router.push(`/dashboard`);
     }
   }, [customerId]);
   return (

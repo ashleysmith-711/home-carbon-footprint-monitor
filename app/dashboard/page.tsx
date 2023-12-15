@@ -1,15 +1,20 @@
+'use client'
+
+import { useEffect } from "react";
 import CarbonFootprintSummary from "../components/CarbonFootprintSummary";
 import Leaderboard from "../components/Leaderboard";
 import UsageGraph from "../components/UsageGraph";
 import UserInfo from "../components/UserInfo"
+import { useRouter } from "next/router";
 
-interface DashboardProps {
-    customerId: number;
-}
-const Dashboard = ({customerId}: DashboardProps) => {
-    console.log('customerId', customerId); // potentially query param
+const Dashboard = () => {
+    useEffect(() => {
+        const id = window && window.localStorage.getItem('customerId');
+        console.log('localStorage customerId in Dashboard??!', id); // potentially query param
+
+    }, [])
     return (
-        <div>
+        <main className="flex min-h-screen flex-col p-24">
             <h1 className="text-3xl text-green-700 mb-6">Energy Journal Dashboard</h1>
             <div className="grid-cols-3 flex gap-3">
                 <UserInfo />
@@ -17,8 +22,7 @@ const Dashboard = ({customerId}: DashboardProps) => {
                 <Leaderboard />
             </div>
             <UsageGraph />
-        </div>
-        
+        </main>
     )
 }
 

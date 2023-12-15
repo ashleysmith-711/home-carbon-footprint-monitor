@@ -40,11 +40,10 @@ const GettingStarted = ({ setId }: Props): JSX.Element => {
     });
 
     const resData = await response.json();
-
     const { link, id } = resData;
-    setId(id)
-    window.open(link, '_blank')
-    console.log({link, id});
+    
+    setId(id);
+    window.open(link, '_blank');
     localStorage.setItem('customerId', id.toString())
   }
 
